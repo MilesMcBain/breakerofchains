@@ -7,7 +7,7 @@
 
 <!-- badges: end -->
 
-Snap your chain at the cursor line. Run the first bit. See the output.
+Break your chain at the cursor line. Run the first bit. See the output.
 Be free.
 
 ## Installation

@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-Snap your chain at the cursor line. Run the first bit. See the output. Be free.
+Break your chain at the cursor line. Run the first bit. See the output. Be free.
 
 ## Installation
 
