@@ -67,5 +67,62 @@ test_that("I can break chains", {
     )
   )
 
+  doc_lines3 <-
+    c(
+      "c(-2, -1, 0, 1, 2) %>%",
+      "mean() +",
+      "1 -",
+      "2 *",
+      "1 /",
+      "1 %>%",
+      "as.logical() |",
+      "TRUE &",
+      "FALSE ||",
+      "TRUE &&",
+      "TRUE"
+    )
 
+  expect_equal(
+    get_broken_chain(doc_lines3, 6),
+    c(
+      "c(-2, -1, 0, 1, 2) %>%",
+      "mean() +",
+      "1 -",
+      "2 *",
+      "1 /",
+      "1"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(doc_lines3, 11),
+    c(
+      "c(-2, -1, 0, 1, 2) %>%",
+      "mean() +",
+      "1 -",
+      "2 *",
+      "1 /",
+      "1 %>%",
+      "as.logical() |",
+      "TRUE &",
+      "FALSE ||",
+      "TRUE &&",
+      "TRUE"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(doc_lines3, 9),
+    c(
+      "c(-2, -1, 0, 1, 2) %>%",
+      "mean() +",
+      "1 -",
+      "2 *",
+      "1 /",
+      "1 %>%",
+      "as.logical() |",
+      "TRUE &",
+      "FALSE"
+    )
+  )
 })
