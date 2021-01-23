@@ -1,3 +1,10 @@
+
+#' break an infix (like %>%) chain and run.
+#'
+#' Run a chain of piped or otherwise infixed commands up to and including the
+#cursor line.
+#'
+#' @export
 break_chain <- function() {
 
     doc_context <- rstudioapi::getActiveDocumentContext()
