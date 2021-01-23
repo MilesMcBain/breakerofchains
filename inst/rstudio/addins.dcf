@@ -1,0 +1,4 @@
+Name: Break chain and run to cursor
+Description: Breaks a chain of infix operators at cursor and runs in console.
+Binding: break_chain
+Interactive: false
