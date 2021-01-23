@@ -29,7 +29,7 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_lines[chain_start_line:doc_cursor_line]
 }
 
-CONTINUATIONS <- "%.%|\\+|-|\\*|/|\\||&|&&|\\|\\|"
+CONTINUATIONS <- "%[^%]+%|\\+|-|\\*|/|\\||&|&&|\\|\\|"
 
 
 continues_chain <- function(lines) {

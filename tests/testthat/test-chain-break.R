@@ -125,4 +125,36 @@ test_that("I can break chains", {
       "FALSE"
     )
   )
+
+  pipe_lines <-
+    c(
+      "foo %<>%",
+      "rnorm(200) %>%",
+      "matrix(ncol = 2) %*%",
+      "matrix(rep(1, 200) ncol = 2) %T>%",
+      "plot %>%",
+      "colSums"
+    )
+
+  expect_equal(
+    get_broken_chain(pipe_lines, 4),
+    c(
+      "foo %<>%",
+      "rnorm(200) %>%",
+      "matrix(ncol = 2) %*%",
+      "matrix(rep(1, 200) ncol = 2)"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(pipe_lines, 6),
+    c(
+      "foo %<>%",
+      "rnorm(200) %>%",
+      "matrix(ncol = 2) %*%",
+      "matrix(rep(1, 200) ncol = 2) %T>%",
+      "plot %>%",
+      "colSums"
+    )
+  )
 })
