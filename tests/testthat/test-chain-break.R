@@ -157,4 +157,29 @@ test_that("I can break chains", {
       "colSums"
     )
   )
+
+  rmd_lines <-
+    c(
+      "# Blah",
+      "",
+      "```{r}",
+      "print(\"hi again\")",
+      "",
+      "mtcars %>%",
+      "filter(gear > 3) %>%",
+      "filter()",
+      "```",
+      "",
+      "blah blah"
+    )
+  
+  truncated_context <- truncate_to_chunk_boundary(rmd_lines, 7)
+
+  expect_equal(
+    get_broken_chain(truncated_context$text, truncated_context$line_number),
+    c(
+      "mtcars %>%",
+      "filter(gear > 3)"
+    )
+  )
 })

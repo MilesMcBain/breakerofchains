@@ -13,7 +13,9 @@ break_chain <- function() {
 
     doc_cursor_line <- rstudioapi::primary_selection(doc_context)$range$start[[1]]
 
-    broken_chain <- get_broken_chain(doc_lines, doc_cursor_line)
+    truncated_context <- truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
+
+    broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
     rstudioapi::sendToConsole(
         broken_chain,
