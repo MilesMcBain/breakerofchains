@@ -182,4 +182,51 @@ test_that("I can break chains", {
       "filter(gear > 3)"
     )
   )
+
+    doc_lines4 <-
+        c(
+            "library(dplyr)",
+            "fn1 <- function() {",
+            "letters %>%",
+            "rev()",
+            "fn2 <- function() {",
+            "mtcars %>%",
+            "summary()",
+            "",
+            "starwars %>%",
+            "group_by(species, sex) %>%",
+            "select(height, mass) %>%",
+            "summarise(",
+            "height = mean(height, na.rm = TRUE),",
+            "mass = mean(mass, na.rm = TRUE)",
+            ") %>%",
+            "ggplot(aes(x = height, y = mass)) + ",
+            "geom_point() %>%",
+            ".[[1]]",
+            "}",
+            "}"
+        )
+
+expect_equal(
+    get_broken_chain(doc_lines4, 4),
+    c("letters %>%",
+        "rev()")
+)
+
+expect_equal(
+    get_broken_chain(doc_lines4, 15),
+c("starwars %>%",
+   "group_by(species, sex) %>%",
+   "select(height, mass) %>%",
+   "summarise(",
+   "height = mean(height, na.rm = TRUE)",
+   "mass = mean(mass, na.rm = TRUE)",
+   ")")
+)
+
+expect_equal(
+    get_broken_chain(doc_lines4, 7),
+c("mtcars %>%",
+  "summary()"))
+
 })

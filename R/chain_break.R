@@ -29,7 +29,7 @@ break_chain <- function() {
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_to_cursor <- doc_lines[seq(doc_cursor_line)]
 
-    chain_start_line <- find_chain_start(doc_to_cursor[-doc_cursor_line])
+    chain_start_line <- find_chain_start(doc_to_cursor)
 
     doc_lines[doc_cursor_line] <- 
         gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line]) %>%
@@ -87,8 +87,9 @@ find_chain_start <- function(doc_lines) {
             continues_chain = continues_chain(last_item)
         ) %>%
         dplyr::filter(
-            bracket_level == 0,
-        )
+            bracket_level == dplyr::last(bracket_level),
+        ) %>%
+        head(-1) # drop the cursor (last) line. It may or may not continue chain. It doesn't matter.
 
         last_item_continues_rle <- rle(line_ends_summary$continues_chain)
         chain_length <- tail(last_item_continues_rle$lengths,  n = 1)
@@ -103,6 +104,10 @@ function() {
     doc_lines <-
         c(
             "library(dplyr)",
+            "fn1 <- function() {",
+            "letters %>%",
+            "rev()",
+            "fn2 <- function() {",
             "mtcars %>%",
             "summary()",
             "",
@@ -115,10 +120,12 @@ function() {
             ") %>%",
             "ggplot(aes(x = height, y = mass)) + ",
             "geom_point() %>%",
-            ".[[1]]"
+            ".[[1]]",
+            "}",
+            "}"
         )
 
-    doc_cursor_line <- 13
+    doc_cursor_line <- 8
 
     doc_text <- paste0(doc_lines, collapse = "\n")
 }
