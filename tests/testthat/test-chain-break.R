@@ -172,7 +172,7 @@ test_that("I can break chains", {
       "",
       "blah blah"
     )
-  
+
   truncated_context <- truncate_to_chunk_boundary(rmd_lines, 7)
 
   expect_equal(
@@ -183,50 +183,79 @@ test_that("I can break chains", {
     )
   )
 
-    doc_lines4 <-
-        c(
-            "library(dplyr)",
-            "fn1 <- function() {",
-            "letters %>%",
-            "rev()",
-            "fn2 <- function() {",
-            "mtcars %>%",
-            "summary()",
-            "",
-            "starwars %>%",
-            "group_by(species, sex) %>%",
-            "select(height, mass) %>%",
-            "summarise(",
-            "height = mean(height, na.rm = TRUE),",
-            "mass = mean(mass, na.rm = TRUE)",
-            ") %>%",
-            "ggplot(aes(x = height, y = mass)) + ",
-            "geom_point() %>%",
-            ".[[1]]",
-            "}",
-            "}"
-        )
+  doc_lines4 <-
+    c(
+      "library(dplyr)",
+      "fn1 <- function() {",
+      "letters %>%",
+      "rev()",
+      "fn2 <- function() {",
+      "mtcars %>%",
+      "summary()",
+      "",
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass) %>%",
+      "summarise(",
+      "height = mean(height, na.rm = TRUE),",
+      "mass = mean(mass, na.rm = TRUE)",
+      ") %>%",
+      "ggplot(aes(x = height, y = mass)) + ",
+      "geom_point() %>%",
+      ".[[1]]",
+      "}",
+      "}"
+    )
 
-expect_equal(
+  expect_equal(
     get_broken_chain(doc_lines4, 4),
-    c("letters %>%",
-        "rev()")
-)
+    c(
+      "letters %>%",
+      "rev()"
+    )
+  )
 
-expect_equal(
+  expect_equal(
     get_broken_chain(doc_lines4, 15),
-c("starwars %>%",
-   "group_by(species, sex) %>%",
-   "select(height, mass) %>%",
-   "summarise(",
-   "height = mean(height, na.rm = TRUE)",
-   "mass = mean(mass, na.rm = TRUE)",
-   ")")
-)
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass) %>%",
+      "summarise(",
+      "height = mean(height, na.rm = TRUE),",
+      "mass = mean(mass, na.rm = TRUE)",
+      ")"
+    )
+  )
 
-expect_equal(
+  expect_equal(
     get_broken_chain(doc_lines4, 7),
-c("mtcars %>%",
-  "summary()"))
+    c(
+      "mtcars %>%",
+      "summary()"
+    )
+  )
 
+  div_lines <-
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass) %>%",
+      "mutate(BMI = mass / ((height * 100) ^ 2)) %>%",
+      "summarise(",
+      "height = mean(height, na.rm = TRUE)",
+      "mass = mean(mass, na.rm = TRUE)",
+      ")"
+    )
+
+
+  expect_equal(
+    get_broken_chain(div_lines, 4),
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass) %>%",
+      "mutate(BMI = mass / ((height * 100) ^ 2))"
+    )
+  )
 })

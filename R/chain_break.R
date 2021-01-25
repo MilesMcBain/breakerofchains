@@ -38,12 +38,12 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_lines[chain_start_line:doc_cursor_line]
 }
 
-CONTINUATIONS <- "%[^%]+%|\\+|-|\\*|/|\\||&|&&|\\|\\|"
+CONTINUATIONS <- "(%[^%]+%|\\+|-|\\*|/|\\||&|&&|\\|\\|)\\s*$"
 
 
 continues_chain <- function(lines) {
     grepl(
-        glue::glue("({CONTINUATIONS})\\s*$"),
+        CONTINUATIONS,
         lines
     )
 }
@@ -51,6 +51,7 @@ continues_chain <- function(lines) {
 
 
 #' find the start of an infix chain
+#' 
 #'
 #' Working upward from the last line, find the start of the chain.
 #'
