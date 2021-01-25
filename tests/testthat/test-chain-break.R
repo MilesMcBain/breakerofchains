@@ -260,19 +260,83 @@ test_that("I can break chains", {
     )
   )
 
-tribble_lines <-
-c("thing <-",
-  "tibble::tribble(",
-  "~s_orgu_id,        ~name,       ~type, ~identifier, ~levy_class,          ~lon,          ~lat,",
-  "239028L, \"Townsville\", \"Permanent\",        114L,         \"A\", 146.820588566, -19.263195895,",
-  "239026L,     \"Kirwan\", \"Permanent\",        113L,         \"A\", 146.731223865, -19.309386332,",
-  "239022L,  \"Woodlands\", \"Permanent\",        111L,         \"A\", 146.709546758, -19.264696038,",
-  "239030L,    \"Wulguru\", \"Permanent\",        115L,         \"A\",  146.81437861, -19.319617496,",
-  ") %>%",
-  "pull(s_orgu_id)")
+  tribble_lines <-
+    c(
+      "thing <-",
+      "tibble::tribble(",
+      "~s_orgu_id,        ~name,       ~type, ~identifier, ~levy_class,          ~lon,          ~lat,",
+      "239028L, \"Townsville\", \"Permanent\",        114L,         \"A\", 146.820588566, -19.263195895,",
+      "239026L,     \"Kirwan\", \"Permanent\",        113L,         \"A\", 146.731223865, -19.309386332,",
+      "239022L,  \"Woodlands\", \"Permanent\",        111L,         \"A\", 146.709546758, -19.264696038,",
+      "239030L,    \"Wulguru\", \"Permanent\",        115L,         \"A\",  146.81437861, -19.319617496",
+      ") %>%",
+      "pull(s_orgu_id) %>%",
+      "c(rev(",
+      "letters",
+      "))"
+    )
 
-  get_broken_chain(tribble_lines, 9)
+  expect_equal(
+    get_broken_chain(tribble_lines, 9),
+    c(
+      "tibble::tribble(",
+      "~s_orgu_id,        ~name,       ~type, ~identifier, ~levy_class,          ~lon,          ~lat,",
+      "239028L, \"Townsville\", \"Permanent\",        114L,         \"A\", 146.820588566, -19.263195895,",
+      "239026L,     \"Kirwan\", \"Permanent\",        113L,         \"A\", 146.731223865, -19.309386332,",
+      "239022L,  \"Woodlands\", \"Permanent\",        111L,         \"A\", 146.709546758, -19.264696038,",
+      "239030L,    \"Wulguru\", \"Permanent\",        115L,         \"A\",  146.81437861, -19.319617496",
+      ") %>%",
+      "pull(s_orgu_id)"
+    )
+  )
 
+  expect_equal(
+    get_broken_chain(tribble_lines, 12),
+    c(
+      "tibble::tribble(",
+      "~s_orgu_id,        ~name,       ~type, ~identifier, ~levy_class,          ~lon,          ~lat,",
+      "239028L, \"Townsville\", \"Permanent\",        114L,         \"A\", 146.820588566, -19.263195895,",
+      "239026L,     \"Kirwan\", \"Permanent\",        113L,         \"A\", 146.731223865, -19.309386332,",
+      "239022L,  \"Woodlands\", \"Permanent\",        111L,         \"A\", 146.709546758, -19.264696038,",
+      "239030L,    \"Wulguru\", \"Permanent\",        115L,         \"A\",  146.81437861, -19.319617496",
+      ") %>%",
+      "pull(s_orgu_id) %>%",
+      "c(rev(",
+      "letters",
+      "))"
+    )
+  )
 
+  nested_chains <-
+    c(
+      "table1 %>%",
+      "left_join(",
+      "table2 %>% select(var1, var2) %>%",
+      "group_by(var1) %>%",
+      "summarise(mv2 = mean(var2))",
+      ") %>%",
+      "pull(mv2) %>%",
+      "min()"
+    )
 
+  expect_equal(
+    get_broken_chain(nested_chains, 4),
+    c(
+      "table2 %>% select(var1, var2) %>%",
+      "group_by(var1)"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(nested_chains, 7),
+    c(
+      "table1 %>%",
+      "left_join(",
+      "table2 %>% select(var1, var2) %>%",
+      "group_by(var1) %>%",
+      "summarise(mv2 = mean(var2))",
+      ") %>%",
+      "pull(mv2)"
+    )
+  )
 })

@@ -41,7 +41,7 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
 CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\|)\\s*$"
 
 
-continues_chain <- function(lines) {
+ends_infix <- function(lines) {
     grepl(
         CONTINUATIONS,
         lines,
@@ -86,7 +86,7 @@ find_chain_start <- function(doc_lines) {
         ) %>%
         dplyr::mutate(
             content_bracket_level = content_bracket_level(line_net_bracket_value),
-            continues_chain = continues_chain(last_item)
+            continues_chain = ends_infix(last_item) | (line_net_bracket_value > 0)
         ) %>%
         dplyr::filter(
             content_bracket_level == dplyr::last(content_bracket_level),
@@ -111,12 +111,14 @@ content_bracket_level <- function(line_net_bracket_value) {
     nominal_values[open_scopes] <- 
       nominal_values[open_scopes] - line_net_bracket_value[open_scopes]
     
-    # If you open a bracket there is most likely something on the lhs of it.
-    # So that content on the lhs has a lower bracket value than the stuff that
-    # comes after the bracket.
-    # We need to account for that when scoring a line's bracket level,
-    # Since we consider content at the same bracket level as where the chain was broken,
-    # looking for the start of the chain.
+    # Lines that have net positive bracket values (more open than closed),
+    # always have things on the lhs of those brackets. So content at the start
+    # of the line has a lower bracket context than end of line.
+    # 
+    # This matters for the filtering step of the algorithm that removes content
+    # not at the same bracket level as the end of the cursor line.
+    # We need to account for the fact that content at the start of the line
+    # could have the same nesting level as where the chain is broken.
     # example:
     # x <-
     #   tibble(a = 1, 
@@ -126,9 +128,9 @@ content_bracket_level <- function(line_net_bracket_value) {
     # if cursor is on pull(a), we need to take into account the `tibble` call
     # is at the same bracket level as pull, even though the line ends on a
     # higher level.
-    # The solution is to subtract the net bracket value of the line from the
-    # lines that open brackets, after the cumsum, so only the content after the
-    # brackets on the next lines starts at that bracket value.
+    # The solution is to subtract positive net bracket values from
+    # lines that open brackets, after the cumulative sum give the bracket level
+    # of the end of the line.
 
     nominal_values
 }
