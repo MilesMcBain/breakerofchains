@@ -238,6 +238,7 @@ test_that("I can break chains", {
 
   div_lines <-
     c(
+      "test <-",
       "starwars %>%",
       "group_by(species, sex) %>%",
       "select(height, mass) %>%",
@@ -248,9 +249,9 @@ test_that("I can break chains", {
       ")"
     )
 
-
+  ## don't sub symbols and don't let assignment continue chain
   expect_equal(
-    get_broken_chain(div_lines, 4),
+    get_broken_chain(div_lines, 5),
     c(
       "starwars %>%",
       "group_by(species, sex) %>%",

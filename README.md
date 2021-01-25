@@ -63,7 +63,7 @@ starwars %>%
 #>  8 Droid   none       97    32
 #>  9 Human   male      183    84
 #> 10 Human   male      182    77
-#> # … with 77 more rows
+#> # ... with 77 more rows
 ```
 
 It’ll work with more than `%>%`. Chains can be broken at lines ending in

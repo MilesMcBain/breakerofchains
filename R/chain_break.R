@@ -32,19 +32,20 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     chain_start_line <- find_chain_start(doc_to_cursor)
 
     doc_lines[doc_cursor_line] <- 
-        gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line]) %>%
+        gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line], perl = TRUE) %>%
         trimws()
 
     doc_lines[chain_start_line:doc_cursor_line]
 }
 
-CONTINUATIONS <- "(%[^%]+%|\\+|-|\\*|/|\\||&|&&|\\|\\|)\\s*$"
+CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\|)\\s*$"
 
 
 continues_chain <- function(lines) {
     grepl(
         CONTINUATIONS,
-        lines
+        lines,
+        perl = TRUE
     )
 }
 
