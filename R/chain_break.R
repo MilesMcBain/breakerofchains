@@ -50,7 +50,8 @@ continues_chain <- function(lines) {
 }
 
 
-
+R_BRACKET <- "\\)|\\]|\\}"
+L_BRACKET <- "\\(|\\[|\\{"
 #' find the start of an infix chain
 #' 
 #'
@@ -65,31 +66,30 @@ find_chain_start <- function(doc_lines) {
     doc_text <- paste0(doc_lines, collapse = "\n")
     source_tokens <- sourcetools::tokenize_string(doc_text)
 
-    r_bracket <- "\\)|\\]|\\}"
 
     line_ends_summary <-
     source_tokens %>%
         dplyr::filter(type != "whitespace") %>%
         dplyr::mutate(
-            bracket_level = dplyr::case_when(
-                type == "bracket" & grepl(r_bracket, value) ~ -1,
-                type == "bracket" ~ 1,
+            bracket_value = dplyr::case_when(
+                type == "bracket" & grepl(L_BRACKET, value) ~ 1,
+                type == "bracket" ~ -1,
                 TRUE ~ 0
             )
         ) %>%
         dplyr::group_by(row) %>%
         dplyr::arrange(column) %>%
         dplyr::summarise(
-            bracket_level = sum(bracket_level),
+            line_net_bracket_value = sum(bracket_value),
             last_item = dplyr::last(value),
             .groups = "drop"
         ) %>%
         dplyr::mutate(
-            bracket_level = cumsum(bracket_level),
+            content_bracket_level = content_bracket_level(line_net_bracket_value),
             continues_chain = continues_chain(last_item)
         ) %>%
         dplyr::filter(
-            bracket_level == dplyr::last(bracket_level),
+            content_bracket_level == dplyr::last(content_bracket_level),
         ) %>%
         head(-1) # drop the cursor (last) line. It may or may not continue chain. It doesn't matter.
 
@@ -100,6 +100,37 @@ find_chain_start <- function(doc_lines) {
             dplyr::pull(row) %>% 
             min()
         
+}
+
+content_bracket_level <- function(line_net_bracket_value) {
+
+    nominal_values <- cumsum(line_net_bracket_value)
+    
+    open_scopes <- line_net_bracket_value > 0
+    
+    nominal_values[open_scopes] <- 
+      nominal_values[open_scopes] - line_net_bracket_value[open_scopes]
+    
+    # If you open a bracket there is most likely something on the lhs of it.
+    # So that content on the lhs has a lower bracket value than the stuff that
+    # comes after the bracket.
+    # We need to account for that when scoring a line's bracket level,
+    # Since we consider content at the same bracket level as where the chain was broken,
+    # looking for the start of the chain.
+    # example:
+    # x <-
+    #   tibble(a = 1, 
+    #         b = 2) %>%
+    #   pull(a)
+    # 
+    # if cursor is on pull(a), we need to take into account the `tibble` call
+    # is at the same bracket level as pull, even though the line ends on a
+    # higher level.
+    # The solution is to subtract the net bracket value of the line from the
+    # lines that open brackets, after the cumsum, so only the content after the
+    # brackets on the next lines starts at that bracket value.
+
+    nominal_values
 }
 
 function() {
