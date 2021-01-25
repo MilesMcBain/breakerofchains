@@ -48,6 +48,16 @@ continues_chain <- function(lines) {
     )
 }
 
+
+
+#' find the start of an infix chain
+#'
+#' Working upward from the last line, find the start of the chain.
+#'
+#' @param doc_lines lines of code to examine.
+#'
+#' @return the index into doc_lines that contains the start of the chain
+#' @importFrom magrittr %>%
 find_chain_start <- function(doc_lines) {
 
     doc_text <- paste0(doc_lines, collapse = "\n")

@@ -20,4 +20,5 @@ Imports:
     rstudioapi,
     sourcetools,
     dplyr,
-    glue
+    glue,
+    magrittr
