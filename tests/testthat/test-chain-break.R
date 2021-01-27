@@ -381,7 +381,7 @@ expect_equal(
       "select(height, mass)",
       "## something something %>%",
       "    .99s.scatter <- starwars2 %>%",
-      "group_by(species, sex) %>% ",
+      "group_by(species, sex) %>%",
       "select(height2, mass2) %>% ## comment @ end",
       "# a comment in the middle",
       "# that does over two lines",
