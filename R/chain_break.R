@@ -31,8 +31,14 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
 
     chain_start_line <- find_chain_start(doc_to_cursor)
 
+    # clip off any infixes on the last line
     doc_lines[doc_cursor_line] <- 
         gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line], perl = TRUE) %>%
+        trimws()
+
+    # clip off any assignment ops on the first line
+    doc_lines[chain_start_line] <-
+        gsub("^\\s*[.A-Za-z][.A-Za-z0-9_]*\\s*<-", "", doc_lines[chain_start_line]) %>%
         trimws()
 
     doc_lines[chain_start_line:doc_cursor_line]
