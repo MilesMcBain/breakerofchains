@@ -399,8 +399,7 @@ expect_equal(
   get_broken_chain(comment_lines, 5),
 c("starwars %>%",
   "group_by(species, sex) %>%",
-  "select(height, mass)",
-  "## something something")
+  "select(height, mass)")
 )
 
 expect_equal(
@@ -419,9 +418,7 @@ expect_equal(
   get_broken_chain(comment_lines, 10),
 c("starwars2 %>%",
    "group_by(species, sex) %>%",
-   "select(height2, mass2) %>% ## comment @ end",
-   "# a comment in the middle",
-   "# that does over two lines")
+   "select(height2, mass2)")
 )
 
 expect_equal(
@@ -433,5 +430,23 @@ c("starwars2 %>%",
   "# that does over two lines",
   "summarise()")
 )
+
+many_comment_lines <-
+  c("# comment 1",
+    "# comment 2",
+    "starwars",
+    "# comment 3",
+    "# comment 4")
+
+expect_equal(
+  get_broken_chain(many_comment_lines, 5),
+c("starwars")
+)
+
+expect_error(
+  get_broken_chain(many_comment_lines, 2),
+  "No code found on or above cursor line."
+)
+
 
 })

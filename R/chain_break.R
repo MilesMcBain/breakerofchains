@@ -2,21 +2,20 @@
 #' break an infix (like %>%) chain and run.
 #'
 #' Run a chain of piped or otherwise infixed commands up to and including the
-#cursor line.
+# cursor line.
 #'
 #' @export
 break_chain <- function() {
-
     doc_context <- rstudioapi::getActiveDocumentContext()
 
     doc_lines <- doc_context$contents
 
     doc_cursor_line <- rstudioapi::primary_selection(doc_context)$range$start[[1]]
 
-    truncated_context <- 
-      truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
+    truncated_context <-
+        truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
 
-    broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
+    broken_chain <- get_broken_chain(cleaned_context$text, cleaned_context$line_number)
 
     rstudioapi::sendToConsole(
         broken_chain,
@@ -24,16 +23,21 @@ break_chain <- function() {
         echo = TRUE,
         focus = FALSE
     )
-
 }
 
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
-    doc_to_cursor <- doc_lines[seq(doc_cursor_line)]
+    doc_to_cursor <-
+        doc_lines[seq_len(doc_cursor_line)] %>%
+        crop_trailing_comment_lines()
+    
+    if (length(doc_to_cursor) == 0) stop("No code found on or above cursor line.")
+
+    doc_cursor_line <- length(doc_to_cursor)
 
     chain_start_line <- find_chain_start(doc_to_cursor)
 
     # clip off any infixes on the last line
-    doc_lines[doc_cursor_line] <- 
+    doc_lines[doc_cursor_line] <-
         gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line], perl = TRUE) %>%
         trimws()
 
@@ -60,7 +64,7 @@ ends_infix <- function(lines) {
 R_BRACKET <- "\\)|\\]|\\}"
 L_BRACKET <- "\\(|\\[|\\{"
 #' find the start of an infix chain
-#' 
+#'
 #'
 #' Working upward from the last line, find the start of the chain.
 #'
@@ -69,13 +73,12 @@ L_BRACKET <- "\\(|\\[|\\{"
 #' @return the index into doc_lines that contains the start of the chain
 #' @importFrom magrittr %>%
 find_chain_start <- function(doc_lines) {
-
     doc_text <- paste0(doc_lines, collapse = "\n")
     source_tokens <- sourcetools::tokenize_string(doc_text)
 
 
     line_ends_summary <-
-    source_tokens %>%
+        source_tokens %>%
         dplyr::filter(!(type %in% c("whitespace", "comment"))) %>%
         dplyr::mutate(
             bracket_value = dplyr::case_when(
@@ -100,38 +103,36 @@ find_chain_start <- function(doc_lines) {
             content_bracket_level == dplyr::last(content_bracket_level),
         )
 
-        chained_items_rle <- rle(line_ends_summary$continues_chain | line_ends_summary$ends_chain)
-        chain_length <- tail(chained_items_rle$lengths,  n = 1)
+    chained_items_rle <- rle(line_ends_summary$continues_chain | line_ends_summary$ends_chain)
+    chain_length <- tail(chained_items_rle$lengths, n = 1)
 
-        tail(line_ends_summary, chain_length) %>% 
-            dplyr::pull(row) %>% 
-            min()
-        
+    tail(line_ends_summary, chain_length) %>%
+        dplyr::pull(row) %>%
+        min()
 }
 
 content_bracket_level <- function(line_net_bracket_value) {
-
     nominal_values <- cumsum(line_net_bracket_value)
-    
+
     open_scopes <- line_net_bracket_value > 0
-    
-    nominal_values[open_scopes] <- 
-      nominal_values[open_scopes] - line_net_bracket_value[open_scopes]
-    
+
+    nominal_values[open_scopes] <-
+        nominal_values[open_scopes] - line_net_bracket_value[open_scopes]
+
     # Lines that have net positive bracket values (more open than closed),
     # always have things on the lhs of those brackets. So content at the start
     # of the line has a lower bracket context than end of line.
-    # 
+    #
     # This matters for the filtering step of the algorithm that removes content
     # not at the same bracket level as the end of the cursor line.
     # We need to account for the fact that content at the start of the line
     # could have the same nesting level as where the chain is broken.
     # example:
     # x <-
-    #   tibble(a = 1, 
+    #   tibble(a = 1,
     #         b = 2) %>%
     #   pull(a)
-    # 
+    #
     # if cursor is on pull(a), we need to take into account the `tibble` call
     # is at the same bracket level as pull, even though the line ends on a
     # higher level.
