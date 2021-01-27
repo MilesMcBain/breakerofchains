@@ -13,7 +13,8 @@ break_chain <- function() {
 
     doc_cursor_line <- rstudioapi::primary_selection(doc_context)$range$start[[1]]
 
-    truncated_context <- truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
+    truncated_context <- 
+      truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
 
     broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
@@ -44,7 +45,7 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_lines[chain_start_line:doc_cursor_line]
 }
 
-CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\|)\\s*$"
+CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\|)\\s*(#.*)?$"
 
 
 ends_infix <- function(lines) {
@@ -75,7 +76,7 @@ find_chain_start <- function(doc_lines) {
 
     line_ends_summary <-
     source_tokens %>%
-        dplyr::filter(type != "whitespace") %>%
+        dplyr::filter(!(type %in% c("whitespace", "comment"))) %>%
         dplyr::mutate(
             bracket_value = dplyr::case_when(
                 type == "bracket" & grepl(L_BRACKET, value) ~ 1,
@@ -92,15 +93,15 @@ find_chain_start <- function(doc_lines) {
         ) %>%
         dplyr::mutate(
             content_bracket_level = content_bracket_level(line_net_bracket_value),
-            continues_chain = ends_infix(last_item) | (line_net_bracket_value > 0)
+            continues_chain = ends_infix(last_item) | (line_net_bracket_value > 0),
+            ends_chain = dplyr::row_number() == dplyr::n()
         ) %>%
         dplyr::filter(
             content_bracket_level == dplyr::last(content_bracket_level),
-        ) %>%
-        head(-1) # drop the cursor (last) line. It may or may not continue chain. It doesn't matter.
+        )
 
-        last_item_continues_rle <- rle(line_ends_summary$continues_chain)
-        chain_length <- tail(last_item_continues_rle$lengths,  n = 1)
+        chained_items_rle <- rle(line_ends_summary$continues_chain | line_ends_summary$ends_chain)
+        chain_length <- tail(chained_items_rle$lengths,  n = 1)
 
         tail(line_ends_summary, chain_length) %>% 
             dplyr::pull(row) %>% 

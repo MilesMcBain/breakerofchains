@@ -365,4 +365,73 @@ test_that("I can break chains", {
       "group_by(species, sex)"
     )
   )
+
+expect_equal(
+    get_broken_chain(assignment_lines, 1),
+    c(
+      "starwars"
+    )
+  )
+
+  comment_lines <-
+    c(
+      "# blah blah -",
+      "species_scatter <- starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)",
+      "## something something %>%",
+      "    .99s.scatter <- starwars2 %>%",
+      "group_by(species, sex) %>% ",
+      "select(height2, mass2) %>% ## comment @ end",
+      "# a comment in the middle",
+      "# that does over two lines",
+      "summarise()"
+    )
+
+expect_equal(
+  get_broken_chain(comment_lines, 4),
+ c("starwars %>%",
+    "group_by(species, sex) %>%",
+    "select(height, mass)")
+)
+
+expect_equal(
+  get_broken_chain(comment_lines, 5),
+c("starwars %>%",
+  "group_by(species, sex) %>%",
+  "select(height, mass)",
+  "## something something")
+)
+
+expect_equal(
+  get_broken_chain(comment_lines, 6),
+  "starwars2"
+)
+
+expect_equal(
+  get_broken_chain(comment_lines, 8),
+c("starwars2 %>%",
+  "group_by(species, sex) %>%",
+  "select(height2, mass2)")
+)
+
+expect_equal(
+  get_broken_chain(comment_lines, 10),
+c("starwars2 %>%",
+   "group_by(species, sex) %>%",
+   "select(height2, mass2) %>% ## comment @ end",
+   "# a comment in the middle",
+   "# that does over two lines")
+)
+
+expect_equal(
+  get_broken_chain(comment_lines, 11),
+c("starwars2 %>%",
+  "group_by(species, sex) %>%",
+  "select(height2, mass2) %>% ## comment @ end",
+  "# a comment in the middle",
+  "# that does over two lines",
+  "summarise()")
+)
+
 })
