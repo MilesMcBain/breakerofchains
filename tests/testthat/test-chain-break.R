@@ -366,7 +366,7 @@ test_that("I can break chains", {
     )
   )
 
-expect_equal(
+  expect_equal(
     get_broken_chain(assignment_lines, 1),
     c(
       "starwars"
@@ -388,65 +388,134 @@ expect_equal(
       "summarise()"
     )
 
-expect_equal(
-  get_broken_chain(comment_lines, 4),
- c("starwars %>%",
-    "group_by(species, sex) %>%",
-    "select(height, mass)")
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 4),
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+  )
 
-expect_equal(
-  get_broken_chain(comment_lines, 5),
-c("starwars %>%",
-  "group_by(species, sex) %>%",
-  "select(height, mass)")
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 5),
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+  )
 
-expect_equal(
-  get_broken_chain(comment_lines, 6),
-  "starwars2"
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 6),
+    "starwars2"
+  )
 
-expect_equal(
-  get_broken_chain(comment_lines, 8),
-c("starwars2 %>%",
-  "group_by(species, sex) %>%",
-  "select(height2, mass2)")
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 8),
+    c(
+      "starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2)"
+    )
+  )
 
-expect_equal(
-  get_broken_chain(comment_lines, 10),
-c("starwars2 %>%",
-   "group_by(species, sex) %>%",
-   "select(height2, mass2)")
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 10),
+    c(
+      "starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2)"
+    )
+  )
 
-expect_equal(
-  get_broken_chain(comment_lines, 11),
-c("starwars2 %>%",
-  "group_by(species, sex) %>%",
-  "select(height2, mass2) %>% ## comment @ end",
-  "# a comment in the middle",
-  "# that does over two lines",
-  "summarise()")
-)
+  expect_equal(
+    get_broken_chain(comment_lines, 11),
+    c(
+      "starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2) %>% ## comment @ end",
+      "# a comment in the middle",
+      "# that does over two lines",
+      "summarise()"
+    )
+  )
 
-many_comment_lines <-
-  c("# comment 1",
-    "# comment 2",
-    "starwars",
-    "# comment 3",
-    "# comment 4")
+  many_comment_lines <-
+    c(
+      "# comment 1",
+      "# comment 2",
+      "starwars",
+      "# comment 3",
+      "# comment 4"
+    )
 
-expect_equal(
-  get_broken_chain(many_comment_lines, 5),
-c("starwars")
-)
+  expect_equal(
+    get_broken_chain(many_comment_lines, 5),
+    c("starwars")
+  )
 
-expect_error(
-  get_broken_chain(many_comment_lines, 2),
-  "No code found on or above cursor line."
-)
+  expect_error(
+    get_broken_chain(many_comment_lines, 2),
+    "No code found on or above cursor line."
+  )
+
+  empty_lines <-
+    c(
+      "",
+      "species_scatter <- starwars %>%",
+      "",
+      "group_by(species, sex) %>%",
+      "select(height, mass)",
+      "",
+      "",
+      "    .99s.scatter <- starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2) %>% ## comment @ end",
+      "",
+      "",
+      "summarise()"
+    )
+
+  expect_equal(
+    get_broken_chain(empty_lines, 5),
+    c(
+      "starwars %>%",
+      "",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+  )
 
 
+  expect_equal(
+    get_broken_chain(empty_lines, 7),
+    c(
+      "starwars %>%",
+      "",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(empty_lines, 12),
+    c(
+      "starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2)"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(empty_lines, 13),
+    c(
+      "starwars2 %>%",
+      "group_by(species, sex) %>%",
+      "select(height2, mass2) %>% ## comment @ end",
+      "",
+      "",
+      "summarise()"
+    )
+  )
 })

@@ -15,7 +15,7 @@ break_chain <- function() {
     truncated_context <-
         truncate_to_chunk_boundary(doc_lines, doc_cursor_line)
 
-    broken_chain <- get_broken_chain(cleaned_context$text, cleaned_context$line_number)
+    broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
     rstudioapi::sendToConsole(
         broken_chain,
@@ -28,7 +28,7 @@ break_chain <- function() {
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_to_cursor <-
         doc_lines[seq_len(doc_cursor_line)] %>%
-        crop_trailing_comment_lines()
+        crop_trailing_non_code_lines()
     
     if (length(doc_to_cursor) == 0) stop("No code found on or above cursor line.")
 
