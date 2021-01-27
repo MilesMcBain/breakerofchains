@@ -1,6 +1,6 @@
 Package: breakerofchains
 Title: Breaks chains and runs them.
-Version: 0.0.7
+Version: 0.0.8
 Authors@R: 
     person(given = "Miles",
            family = "McBain",
