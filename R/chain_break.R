@@ -18,20 +18,20 @@ break_chain <- function() {
     broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
     print_chain_code(broken_chain)
-    
+
     calling_env <- parent.frame()
     .chain <- eval(parse(text = broken_chain), envir = calling_env)
     print(.chain)
-    
-    if (getOption(breakerofchains_store_result, TRUE)) assign(".chain", .chain, .GlobalEnv)
-    
+
+    if (getOption("breakerofchains_store_result", TRUE)) assign(".chain", .chain, .GlobalEnv)
+
 }
 
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_to_cursor <-
         doc_lines[seq_len(doc_cursor_line)] %>%
         crop_trailing_non_code_lines()
-    
+
     if (length(doc_to_cursor) == 0) stop("No code found on or above cursor line.")
 
     doc_cursor_line <- length(doc_to_cursor)

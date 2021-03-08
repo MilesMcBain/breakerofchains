@@ -93,7 +93,7 @@ passing it to further diagnostics. I’ve found this is nicer than
 `.Last.value` which is easy to accidently overwrite, and has a hard to
 remember the capitalisation scheme.
 
-Disable this behaviour with `options(breakerofchains_store_result =
+Disable this behaviour with `options("breakerofchains_store_result" =
 FALSE)`
 
 ## Keybindings
