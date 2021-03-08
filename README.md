@@ -85,7 +85,7 @@ It’ll work with more than `%>%`. Chains can be broken at lines ending in
 any `%%` infix, and any math/logic infix. So you can break `ggplot2`
 layers chained with `+` this way too.
 
-# Stored result `.chain`
+## Stored result `.chain`
 
 By default the result of the last broken chain is saved in your
 environment as the variable `.chain` so you can immediately start
@@ -96,7 +96,7 @@ remember the capitalisation scheme.
 Disable this behaviour with `options(breakerofchains_store_result =
 FALSE)`
 
-# Keybindings
+## Keybindings
 
   - RStudio: [addins can be bound to keys using the keybinding
     menu](https://www.infoworld.com/article/3327573/do-more-with-r-rstudio-addins-and-keyboard-shortcuts.html).
@@ -116,7 +116,7 @@ FALSE)`
 ]
 ```
 
-# Pitfalls
+## Pitfalls
 
 Since R’s parser is used to help figure out where the chain starts, the
 process will fail if any of the code above the cursor is invalid - even
