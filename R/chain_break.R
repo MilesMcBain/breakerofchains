@@ -23,7 +23,7 @@ break_chain <- function() {
     .chain <- eval(parse(text = broken_chain), envir = calling_env)
     print(.chain)
     
-    if (getOption(breakerofchains_store_result, TRUE)) assign(".chain", .chain, .GlobalEnv)
+    if (getOption("breakerofchains_store_result", TRUE)) assign(".chain", .chain, .GlobalEnv)
     
 }
 
