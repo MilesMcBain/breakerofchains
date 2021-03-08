@@ -35,7 +35,8 @@ Say you had:
 ```{r, eval = FALSE}
 library(tidyverse)
 
-starwars %>%
+star_plot <-
+  starwars %>%
   group_by(species, sex) %>%
   select(height, mass) %>%
   summarise(
@@ -50,7 +51,7 @@ starwars %>%
 
 2. Invoke the RStudio Addin `Break chain and run to cursor`
 
-3. Code is run in console from start of chain up to your cursor line:
+3. Code is run from start of chain up to your cursor line, and result is printed in the console:
 
 ```{r}
 starwars %>%
@@ -58,9 +59,30 @@ starwars %>%
   select(height, mass)
 ```
 
+```{r, echo = FALSE, include = FALSE}
+.chain <-
+  starwars %>%
+  group_by(species, sex) %>%
+  select(height, mass)
+```
+with a stored result available in `.chain`:
+
+```{r}
+glimpse(.chain)
+```
+
 It'll work with more than `%>%`. Chains can be broken at lines ending in any
 `%%` infix, and any math/logic infix. So you can break `ggplot2` layers
 chained with `+` this way too.
+
+# Stored result `.chain`
+
+By default the result of the last broken chain is saved in your environment
+as the variable `.chain` so you can immediately start passing it to further
+diagnostics. I've found this is nicer than `.Last.value` which
+is easy to accidently overwrite, and has a hard to remember the capitalisation scheme.
+
+Disable this behaviour with `options(breakerofchains_store_result = FALSE)`
 
 # Keybindings
 

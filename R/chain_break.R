@@ -17,12 +17,14 @@ break_chain <- function() {
 
     broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
-    rstudioapi::sendToConsole(
-        broken_chain,
-        execute = TRUE,
-        echo = TRUE,
-        focus = FALSE
-    )
+    print_chain_code(broken_chain)
+    
+    calling_env <- parent.frame()
+    .chain <- eval(parse(text = broken_chain), envir = calling_env)
+    print(.chain)
+    
+    if (getOption(breakerofchains_store_result, TRUE)) assign(".chain", .chain, .GlobalEnv)
+    
 }
 
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
@@ -39,12 +41,12 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     # clip off any infixes on the last line
     doc_lines[doc_cursor_line] <-
         gsub(CONTINUATIONS, "", doc_lines[doc_cursor_line], perl = TRUE) %>%
-        trimws()
+        trimws(which = "right")
 
     # clip off any assignment ops on the first line
     doc_lines[chain_start_line] <-
         gsub("^\\s*[.A-Za-z][.A-Za-z0-9_]*\\s*<-", "", doc_lines[chain_start_line]) %>%
-        trimws()
+        trimws(which = "left")
 
     doc_lines[chain_start_line:doc_cursor_line]
 }
@@ -172,3 +174,7 @@ function() {
 
     doc_text <- paste0(doc_lines, collapse = "\n")
 }
+print_chain_code <- function(broken_chain) {
+  cat(paste0(broken_chain, collapse = "\n+"), "\n")
+}
+

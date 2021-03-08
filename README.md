@@ -24,7 +24,8 @@ Say you had:
 ``` r
 library(tidyverse)
 
-starwars %>%
+star_plot <-
+  starwars %>%
   group_by(species, sex) %>%
   select(height, mass) %>%
   summarise(
@@ -40,7 +41,8 @@ starwars %>%
 
 2.  Invoke the RStudio Addin `Break chain and run to cursor`
 
-3.  Code is run in console from start of chain up to your cursor line:
+3.  Code is run from start of chain up to your cursor line, and result
+    is printed in the console:
 
 <!-- end list -->
 
@@ -63,12 +65,36 @@ starwars %>%
 #>  8 Droid   none       97    32
 #>  9 Human   male      183    84
 #> 10 Human   male      182    77
-#> # ... with 77 more rows
+#> # … with 77 more rows
+```
+
+with a stored result available in `.chain`:
+
+``` r
+glimpse(.chain)
+#> Rows: 87
+#> Columns: 4
+#> Groups: species, sex [41]
+#> $ species <chr> "Human", "Droid", "Droid", "Human", "Human", "Human", "Human",…
+#> $ sex     <chr> "male", "none", "none", "male", "female", "male", "female", "n…
+#> $ height  <int> 172, 167, 96, 202, 150, 178, 165, 97, 183, 182, 188, 180, 228,…
+#> $ mass    <dbl> 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, …
 ```
 
 It’ll work with more than `%>%`. Chains can be broken at lines ending in
 any `%%` infix, and any math/logic infix. So you can break `ggplot2`
 layers chained with `+` this way too.
+
+# Stored result `.chain`
+
+By default the result of the last broken chain is saved in your
+environment as the variable `.chain` so you can immediately start
+passing it to further diagnostics. I’ve found this is nicer than
+`.Last.value` which is easy to accidently overwrite, and has a hard to
+remember the capitalisation scheme.
+
+Disable this behaviour with `options(breakerofchains_store_result =
+FALSE)`
 
 # Keybindings
 
