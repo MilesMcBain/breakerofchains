@@ -14,7 +14,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# breakerofchains <img src="inst/media/breakerofchains.png" align="right" width="60%"/>
+# breakerofchains <img src="inst/media/breakerofchains.png" align="right" width="300px"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
