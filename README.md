@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# breakerofchains
+# breakerofchains <img src="inst/media/breakerofchains.png" align="right" width="60%"/>
 
 <!-- badges: start -->
 
