@@ -373,6 +373,39 @@ test_that("I can break chains", {
     )
   )
 
+  equals_assignment_lines <-
+    c(
+      "species_scatter = starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)",
+      "    .99s.scatter = starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+
+   expect_equal(
+    get_broken_chain(equals_assignment_lines, 3),
+    c(
+      "starwars %>%",
+      "group_by(species, sex) %>%",
+      "select(height, mass)"
+    )
+  )
+  expect_equal(
+    get_broken_chain(equals_assignment_lines, 5),
+    c(
+      "starwars %>%",
+      "group_by(species, sex)"
+    )
+  )
+
+  expect_equal(
+    get_broken_chain(equals_assignment_lines, 1),
+    c(
+      "starwars"
+    )
+  )
+
   comment_lines <-
     c(
       "# blah blah -",

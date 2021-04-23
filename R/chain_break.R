@@ -45,7 +45,7 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
 
     # clip off any assignment ops on the first line
     doc_lines[chain_start_line] <-
-        gsub("^\\s*[.A-Za-z][.A-Za-z0-9_]*\\s*<-", "", doc_lines[chain_start_line]) %>%
+        gsub("^\\s*[.A-Za-z][.A-Za-z0-9_]*\\s*(?:(?:<-)|(?:=))", "", doc_lines[chain_start_line]) %>%
         trimws(which = "left")
 
     doc_lines[chain_start_line:doc_cursor_line]
