@@ -2,14 +2,24 @@
 #' break an infix (like %>%) chain and run.
 #'
 #' Run a chain of piped or otherwise infixed commands up to and including the
-#' cursor line. The chain is assumed to end each line with the chaining operator, as is common in 
-#' the {tidyverse} style guide.
+#' cursor line. The chain is assumed to end each line with the chaining
+#' operator, as is common in ' the {tidyverse} style guide.
+#'  
+#' When a chain begins with an assignment via `=` or `<-` the assignment is
+#' not performed. Results of running the chain section are printed to the
+#' console, and by default stored in a global variable called `.chain`. 
+#'
+#' Storing results in `.chain` can be disabled by setting
+#' `options(breakerofchains_store_result = FALSE)`.
 #' 
-#' Your code is read via the {rstudioapi} in RStudio or VSCode.
+#' Your code is read via the {rstudioapi} in RStudio or {rstudioapi} emulation
+#' in VSCode. Code is parsed up to the cursor line before an algorithm
+#' works backwards to find the chain start. Unfortunately this means all code
+#' above the cursor line must be valid parsable R code.
 #'
 #' It is unlikely you want to run this function directly. You probably want to
-#' bind it to a keyboard shortcut. See README for examples.
-#' 
+#' bind it to a keyboard shortcut. See README for more information.
+#'
 #' @export
 break_chain <- function() {
     doc_context <- rstudioapi::getActiveDocumentContext()
@@ -24,20 +34,19 @@ break_chain <- function() {
     broken_chain <- get_broken_chain(truncated_context$text, truncated_context$line_number)
 
     print_chain_code(broken_chain)
-    
+
     calling_env <- parent.frame()
     .chain <- eval(parse(text = broken_chain), envir = calling_env)
     print(.chain)
-    
+
     if (getOption("breakerofchains_store_result", TRUE)) assign(".chain", .chain, .GlobalEnv)
-    
 }
 
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_to_cursor <-
         doc_lines[seq_len(doc_cursor_line)] %>%
         crop_trailing_non_code_lines()
-    
+
     if (length(doc_to_cursor) == 0) stop("No code found on or above cursor line.")
 
     doc_cursor_line <- length(doc_to_cursor)
@@ -71,6 +80,14 @@ ends_infix <- function(lines) {
 
 R_BRACKET <- "\\)|\\]|\\}"
 L_BRACKET <- "\\(|\\[|\\{"
+utils::globalVariables(c(
+    "type",
+    "column",
+    "bracket_value",
+    "value",
+    "line_net_bracket_value",
+    "last_item"
+))
 #' find the start of an infix chain
 #'
 #'
@@ -112,9 +129,9 @@ find_chain_start <- function(doc_lines) {
         )
 
     chained_items_rle <- rle(line_ends_summary$continues_chain | line_ends_summary$ends_chain)
-    chain_length <- tail(chained_items_rle$lengths, n = 1)
+    chain_length <- utils::tail(chained_items_rle$lengths, n = 1)
 
-    tail(line_ends_summary, chain_length) %>%
+    utils::tail(line_ends_summary, chain_length) %>%
         dplyr::pull(row) %>%
         min()
 }
@@ -181,6 +198,5 @@ function() {
     doc_text <- paste0(doc_lines, collapse = "\n")
 }
 print_chain_code <- function(broken_chain) {
-  cat(paste0(broken_chain, collapse = "\n+"), "\n")
+    cat(paste0(broken_chain, collapse = "\n+"), "\n")
 }
-

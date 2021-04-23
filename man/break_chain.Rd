@@ -8,4 +8,22 @@ break_chain()
 }
 \description{
 Run a chain of piped or otherwise infixed commands up to and including the
+cursor line. The chain is assumed to end each line with the chaining
+operator, as is common in ' the {tidyverse} style guide.
+
+When a chain begins with an assignment via \code{=} or \verb{<-} the assignment is
+not performed. Results of running the chain section are printed to the
+console, and by default stored in a global variable called \code{.chain}.
+}
+\details{
+Storing results in \code{.chain} can be disabled by setting
+\code{options(breakerofchains_store_result = FALSE)}.
+
+Your code is read via the {rstudioapi} in RStudio or {rstudioapi} emulation
+in VSCode. Code is parsed up to the cursor line before an algorithm
+works backwards to find the chain start. Unfortunately this means all code
+above the cursor line must be valid parsable R code.
+
+It is unlikely you want to run this function directly. You probably want to
+bind it to a keyboard shortcut. See README for more information.
 }

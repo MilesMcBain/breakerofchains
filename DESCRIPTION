@@ -1,5 +1,5 @@
 Package: breakerofchains
-Title: Break chained expressions and run them with printed output.
+Title: Break chained expressions and run them with printed output
 Version: 0.1.1
 Authors@R: 
     person(given = "Miles",
@@ -25,4 +25,5 @@ Imports:
     sourcetools,
     dplyr,
     glue,
-    magrittr
+    magrittr,
+    utils

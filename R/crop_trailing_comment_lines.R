@@ -5,8 +5,8 @@ crop_trailing_non_code_lines <- function(text) {
 
   non_code_lines_rle <- rle(comment_lines | empty_lines)
 
-  if (tail(non_code_lines_rle$values, 1)) {
-    num_trailing_non_code_lines <- tail(non_code_lines_rle$lengths, 1)
+  if (utils::tail(non_code_lines_rle$values, 1)) {
+    num_trailing_non_code_lines <- utils::tail(non_code_lines_rle$lengths, 1)
     text_length <- length(text) - num_trailing_non_code_lines
 
     text[seq_len(text_length)]

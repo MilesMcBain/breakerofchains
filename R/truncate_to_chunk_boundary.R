@@ -4,8 +4,8 @@ truncate_to_chunk_boundary <- function(text, line_number) {
  
   match_lines <- which(tripple_ticks > -1)
 
-  upper_fence <- head(match_lines[match_lines > line_number], 1)
-  lower_fence <- tail(match_lines[match_lines < line_number], 1)
+  upper_fence <- utils::head(match_lines[match_lines > line_number], 1)
+  lower_fence <- utils::tail(match_lines[match_lines < line_number], 1)
 
   if (length(upper_fence) == 0) {
     upper_bound <- length(text)
