@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
 # breakerofchains <img src="inst/media/breakerofchains.png" align="right" width="300px"/>
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/MilesMcBain/breakerofchains/workflows/R-CMD-check/badge.svg)](https://github.com/MilesMcBain/breakerofchains/actions)
 <!-- badges: end -->
 
 Break your chain at the cursor line. Run the first bit. See the output. Be free.

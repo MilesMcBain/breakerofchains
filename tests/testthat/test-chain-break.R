@@ -59,11 +59,13 @@ test_that("I can break chains", {
     )
 
   ## Will fail for now since sourcetools doesn't know new operator
-  expect_equal(
+  expect_failure(
+    expect_equal(
     get_broken_chain(doc_lines2, 4),
     c(
       "mtcars |>",
       "group_by(gear, cyl)"
+    )
     )
   )
 

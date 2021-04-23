@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![R-CMD-check](https://github.com/MilesMcBain/breakerofchains/workflows/R-CMD-check/badge.svg)](https://github.com/MilesMcBain/breakerofchains/actions)
 <!-- badges: end -->
 
 Break your chain at the cursor line. Run the first bit. See the output.

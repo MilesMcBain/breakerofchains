@@ -1,5 +1,5 @@
 Package: breakerofchains
-Title: Breaks chains and runs them.
+Title: Break chained expressions and run them with printed output.
 Version: 0.1.1
 Authors@R: 
     person(given = "Miles",
@@ -7,7 +7,11 @@ Authors@R:
            role = c("aut", "cre"),
            email = "miles.mcbain@gmail.com",
            comment = c(ORCID = "0000-0003-2865-2548"))
-Description: Run an infix operator chain up to the line your cursor is on.
+Description: Run an infix operator expression chain up to the line your
+  cursor is on, printing the output, and ignoring any result assignment step.
+  This facilitates easier interactive debugging of chained code. Common
+  examples of code ammenable to breaking with this tool are {dplyr} wrangling
+  chained with '%>%', and {ggplot2} plotting chained with '+'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

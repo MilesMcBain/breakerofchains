@@ -2,8 +2,14 @@
 #' break an infix (like %>%) chain and run.
 #'
 #' Run a chain of piped or otherwise infixed commands up to and including the
-# cursor line.
+#' cursor line. The chain is assumed to end each line with the chaining operator, as is common in 
+#' the {tidyverse} style guide.
+#' 
+#' Your code is read via the {rstudioapi} in RStudio or VSCode.
 #'
+#' It is unlikely you want to run this function directly. You probably want to
+#' bind it to a keyboard shortcut. See README for examples.
+#' 
 #' @export
 break_chain <- function() {
     doc_context <- rstudioapi::getActiveDocumentContext()
