@@ -362,10 +362,8 @@ test_that("I can break chains", {
   )
   expect_equal(
     get_broken_chain(assignment_lines, 5),
-    c(
-      "starwars %>%",
-      "group_by(species, sex)"
-    )
+    c("    starwars %>%",
+      "group_by(species, sex)")
   )
 
   expect_equal(
@@ -396,7 +394,7 @@ test_that("I can break chains", {
   expect_equal(
     get_broken_chain(equals_assignment_lines, 5),
     c(
-      "starwars %>%",
+      "    starwars %>%",
       "group_by(species, sex)"
     )
   )
@@ -443,13 +441,13 @@ test_that("I can break chains", {
 
   expect_equal(
     get_broken_chain(comment_lines, 6),
-    "starwars2"
+    "    starwars2"
   )
 
   expect_equal(
     get_broken_chain(comment_lines, 8),
     c(
-      "starwars2 %>%",
+      "    starwars2 %>%",
       "group_by(species, sex) %>%",
       "select(height2, mass2)"
     )
@@ -458,7 +456,7 @@ test_that("I can break chains", {
   expect_equal(
     get_broken_chain(comment_lines, 10),
     c(
-      "starwars2 %>%",
+      "    starwars2 %>%",
       "group_by(species, sex) %>%",
       "select(height2, mass2)"
     )
@@ -467,7 +465,7 @@ test_that("I can break chains", {
   expect_equal(
     get_broken_chain(comment_lines, 11),
     c(
-      "starwars2 %>%",
+      "    starwars2 %>%",
       "group_by(species, sex) %>%",
       "select(height2, mass2) %>% ## comment @ end",
       "# a comment in the middle",
@@ -536,7 +534,7 @@ test_that("I can break chains", {
   expect_equal(
     get_broken_chain(empty_lines, 12),
     c(
-      "starwars2 %>%",
+      "    starwars2 %>%",
       "group_by(species, sex) %>%",
       "select(height2, mass2)"
     )
@@ -545,7 +543,7 @@ test_that("I can break chains", {
   expect_equal(
     get_broken_chain(empty_lines, 13),
     c(
-      "starwars2 %>%",
+      "    starwars2 %>%",
       "group_by(species, sex) %>%",
       "select(height2, mass2) %>% ## comment @ end",
       "",

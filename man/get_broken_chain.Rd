@@ -16,7 +16,7 @@ a character vector of R code representing the broken chain.
 }
 \description{
 This interface is intended for developers who want to hook into the chain
-breaking algorithm to create binding in other text editors.
+breaking algorithm to create bindings in other text editors.
 }
 \details{
 Given a character vector of R code lines, and the line number of the cursor,

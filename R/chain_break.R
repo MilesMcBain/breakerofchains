@@ -87,8 +87,11 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
 
     # clip off any assignment ops on the first line
     doc_lines[chain_start_line] <-
-        gsub("^\\s*[.A-Za-z][.A-Za-z0-9_]*\\s*(?:(?:<-)|(?:=))", "", doc_lines[chain_start_line]) %>%
-        trimws(which = "left")
+        gsub(
+          "(^\\s*)[.A-Za-z][.A-Za-z0-9_]*\\s*(?:(?:<-)|(?:=))\\s*",
+          "\\1",
+          doc_lines[chain_start_line]
+        )
 
     doc_lines[chain_start_line:doc_cursor_line]
 }
@@ -223,6 +226,24 @@ function() {
     doc_cursor_line <- 8
 
     doc_text <- paste0(doc_lines, collapse = "\n")
+
+    drake_plan(
+        thing = starwars %>% 
+          group_by(species, sex) %>%
+          select(height, mass) %>%
+          summarise(
+              height = mean(height, na.rm = TRUE),
+              mass = mean(mass, na.rm = TRUE)
+          )
+    )
+
+gsub(
+          "(^\\s*)[.A-Za-z][.A-Za-z0-9_]*\\s*(?:(?:<-)|(?:=))\\s*",
+          "\\1",
+          "species_scatter <- starwars %>%"
+        )
+
+
 }
 print_chain_code <- function(broken_chain) {
     cat(paste0(broken_chain, collapse = "\n+"), "\n")
