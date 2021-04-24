@@ -19,7 +19,6 @@
 #'
 #' It is unlikely you want to run this function directly. You probably want to
 #' bind it to a keyboard shortcut. See README for more information.
-#'
 #' @export
 break_chain <- function() {
     doc_context <- rstudioapi::getActiveDocumentContext()
@@ -42,6 +41,34 @@ break_chain <- function() {
     if (getOption("breakerofchains_store_result", TRUE)) assign(".chain", .chain, .GlobalEnv)
 }
 
+
+#' get a broken chain as text
+#'
+#' This interface is intended for developers who want to hook into the chain
+#' breaking algorithm to create bindings in other text editors.
+#' 
+#' Given a character vector of R code lines, and the line number of the cursor,
+#' it returns a character vector of R code lines which is the start of the
+#' chained expression the cursor is on, up to the cursor line.
+#' 
+#' Any assignment with `<-` or `=` at the head of the chain is removed.
+#'
+#' @param doc_lines a character vector of R code, one element per line.
+#' @param doc_cursor_line a number representing the line the cursor is on.
+#' @return a character vector of R code representing the broken chain. 
+#' @examples
+#' get_broken_chain(
+#'     c(
+#'      "species_scatter <- starwars %>%",
+#'      "group_by(species, sex) %>%",
+#'      "select(height, mass)",
+#'      "    .99s.scatter <- starwars %>%",
+#'      "group_by(species, sex) %>%",
+#'      "select(height, mass)"
+#'     ),
+#'     3
+#' )
+#' @export
 get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_to_cursor <-
         doc_lines[seq_len(doc_cursor_line)] %>%
