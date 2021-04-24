@@ -3,7 +3,7 @@
 #' shortcut and run it with the cursor on the line of the chain you want to run up to.
 #' 
 #' Why do you want this? Do you find yourself appending code to piped
-#' expressions in oreder to break them up for debugging? For example adding
+#' expressions in order to break them up for debugging? For example adding
 #' `I()` to the end of a line? 
 #' 
 #' Apart from being an annoying number of keystrokes, using these little
@@ -14,8 +14,8 @@
 #' add code, but also if you are assigning the result of chain with
 #' `<-` or `=` that assignment is skipped when the chain section is run.
 #' 
-#' Results are printed, and stored in a global `.chain`, analagous to
-#' `.Last.value`. So you don't risk accidently putting strange state into your
+#' Results are printed, and stored in a global `.chain`, analogous to
+#' `.Last.value`. So you don't risk accidentally putting strange state into your
 #' environment that will leave you scratching your head later.
 #'  
 #' `break_chain` works with all infix operators, and so can be used run portions

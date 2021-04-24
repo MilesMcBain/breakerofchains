@@ -9,7 +9,7 @@
 Run an infix operator expression chain up to the line your
   cursor is on, printing the output, and ignoring any result assignment step.
   This facilitates easier interactive debugging of chained code. Common
-  examples of code ammenable to breaking with this tool are {dplyr} wrangling
+  examples of code amenable to breaking with this tool are {dplyr} wrangling
   chained with `%>%`, and {ggplot2} plotting chained with `+`.
 }
 \details{
@@ -17,7 +17,7 @@ The function you are looking for is \code{\link[=break_chain]{break_chain()}}. B
 shortcut and run it with the cursor on the line of the chain you want to run up to.
 
 Why do you want this? Do you find yourself appending code to piped
-expressions in oreder to break them up for debugging? For example adding
+expressions in order to break them up for debugging? For example adding
 \code{I()} to the end of a line?
 
 Apart from being an annoying number of keystrokes, using these little
@@ -28,8 +28,8 @@ further bugs.
 add code, but also if you are assigning the result of chain with
 \verb{<-} or \code{=} that assignment is skipped when the chain section is run.
 
-Results are printed, and stored in a global \code{.chain}, analagous to
-\code{.Last.value}. So you don't risk accidently putting strange state into your
+Results are printed, and stored in a global \code{.chain}, analogous to
+\code{.Last.value}. So you don't risk accidentally putting strange state into your
 environment that will leave you scratching your head later.
 
 \code{break_chain} works with all infix operators, and so can be used run portions

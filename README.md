@@ -91,7 +91,7 @@ layers chained with `+` this way too.
 By default the result of the last broken chain is saved in your
 environment as the variable `.chain` so you can immediately start
 passing it to further diagnostics. I’ve found this is nicer than
-`.Last.value` which is easy to accidently overwrite, and has a hard to
+`.Last.value` which is easy to accidentally overwrite, and has a hard to
 remember the capitalisation scheme.
 
 Disable this behaviour with `options(breakerofchains_store_result =
