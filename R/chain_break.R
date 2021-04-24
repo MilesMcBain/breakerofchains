@@ -235,15 +235,15 @@ function() {
               height = mean(height, na.rm = TRUE),
               mass = mean(mass, na.rm = TRUE)
           )
+          ,
+          thing2 = starwars %>% 
+          group_by(species, sex) %>%
+          select(height, mass) %>%
+          summarise(
+              height = mean(height, na.rm = TRUE),
+              mass = mean(mass, na.rm = TRUE)
+          )
     )
-
-gsub(
-          "(^\\s*)[.A-Za-z][.A-Za-z0-9_]*\\s*(?:(?:<-)|(?:=))\\s*",
-          "\\1",
-          "species_scatter <- starwars %>%"
-        )
-
-
 }
 print_chain_code <- function(broken_chain) {
     cat(paste0(broken_chain, collapse = "\n+"), "\n")
