@@ -1,5 +1,5 @@
 Package: breakerofchains
-Title: Break chained expressions and run them with printed output
+Title: Break Chained Expressions and Run Them With Printed Output
 Version: 0.1.1
 Authors@R: 
     person(given = "Miles",
@@ -14,7 +14,6 @@ Description: Run an infix operator expression chain up to the line your
   chained with `%>%`, and {ggplot2} plotting chained with `+`.
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
@@ -24,6 +23,5 @@ Imports:
     rstudioapi,
     sourcetools,
     dplyr,
-    glue,
     magrittr,
     utils
