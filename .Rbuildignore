@@ -1,3 +1,6 @@
 ^README\.Rmd$
+^README\.html$
 ^LICENSE\.md$
 ^\.github$
+^\.vscode$
+^\.devcontainer
