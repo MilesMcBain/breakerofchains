@@ -2,13 +2,17 @@
 
 ### r-hub
 
-Windows Server 2008 R2 SP1, R-release, 32/64 bit 
-Ubuntu Linux 20.04.1 LTS, R-release, GCC
-macOS 10.13.6 High Sierra, R-release, CRAN's setup
+* Windows Server 2008 R2 SP1, R-release, 32/64 bit 
+* Ubuntu Linux 20.04.1 LTS, R-release, GCC
+* macOS 10.13.6 High Sierra, R-release, CRAN's setup
 
 ### rocker
 
-Ubuntu 20.04.2 LTS, R-devel
+* Ubuntu 20.04.2 LTS, R-devel
+
+### Winbuilder
+
+* R version 4.1.0 alpha (2021-04-22 r80209)
 
 ## R CMD check results
 
