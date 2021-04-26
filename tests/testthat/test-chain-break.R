@@ -48,27 +48,6 @@ test_that("I can break chains", {
     )
   )
 
-
-  doc_lines2 <-
-    c(
-      "libary(tidyverse)",
-      "",
-      "mtcars |>",
-      "group_by(gear, cyl) |>",
-      "summarise(mpg = mean(mpg))"
-    )
-
-  ## Will fail for now since sourcetools doesn't know new operator
-  expect_failure(
-    expect_equal(
-    get_broken_chain(doc_lines2, 4),
-    c(
-      "mtcars |>",
-      "group_by(gear, cyl)"
-    )
-    )
-  )
-
   doc_lines3 <-
     c(
       "c(-2, -1, 0, 1, 2) %>%",

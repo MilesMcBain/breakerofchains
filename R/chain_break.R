@@ -96,7 +96,7 @@ get_broken_chain <- function(doc_lines, doc_cursor_line) {
     doc_lines[chain_start_line:doc_cursor_line]
 }
 
-CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\|)\\s*(#.*)?$"
+CONTINUATIONS <- "(%[^%]+%|\\+|(?<!<)-|\\*|/|\\||&|&&|\\|\\||\\|>)\\s*(#.*)?$"
 
 
 ends_infix <- function(lines) {
@@ -129,7 +129,9 @@ utils::globalVariables(c(
 #' @importFrom magrittr %>%
 find_chain_start <- function(doc_lines) {
     doc_text <- paste0(doc_lines, collapse = "\n")
-    source_tokens <- sourcetools::tokenize_string(doc_text)
+    source_tokens <- 
+      sourcetools::tokenize_string(doc_text) %>%
+      polyfill_base_pipe()
 
 
     line_ends_summary <-

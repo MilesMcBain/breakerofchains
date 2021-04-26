@@ -86,6 +86,10 @@ It’ll work with more than `%>%`. Chains can be broken at lines ending in
 any `%%` infix, and any math/logic infix. So you can break `ggplot2`
 layers chained with `+` this way too.
 
+Base pipe: `|>` has been tested with chain breaking and works in
+R-devel. But let’s see the final release implemention before we declare
+base pipe is supported.
+
 ## Stored result `.chain`
 
 By default the result of the last broken chain is saved in your
