@@ -3,6 +3,7 @@
 ### r-hub
 
 * Windows Server 2008 R2 SP1, R-release, 32/64 bit 
+* Windows Server 2008 R2 SP1, R-oldrel, 32/64 bit
 * Ubuntu Linux 20.04.1 LTS, R-release, GCC
 * macOS 10.13.6 High Sierra, R-release, CRAN's setup
 
