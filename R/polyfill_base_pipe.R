@@ -41,9 +41,4 @@ function() {
   source_tokens <-
     sourcetools::tokenize_string(doc_text) %>%
     polyfill_base_pipe()
-
-  mtcars |>
-    group_by(gear, cyl) |>
-    summarise(mpg = mean(mpg))
-
 }
