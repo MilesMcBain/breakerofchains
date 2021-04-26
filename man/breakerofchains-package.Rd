@@ -4,7 +4,7 @@
 \name{breakerofchains-package}
 \alias{breakerofchains}
 \alias{breakerofchains-package}
-\title{breakerofchains: Break Chained Expressions and Run Them With Printed Output}
+\title{breakerofchains: Break Chained Expressions and Run Them with Printed Output}
 \description{
 Run an infix operator expression chain up to the line your
   cursor is on, printing the output, and ignoring any result assignment step.
