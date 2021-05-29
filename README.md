@@ -84,7 +84,7 @@ glimpse(.chain)
 #> $ mass    <dbl> 77.0, 75.0, 32.0, 136.0, 49.0, 120.0, 75.0, 32.0, 84.0, 77.0, …
 ```
 
-For pipe chains Base pipe `|>` also supported, but chains can also be
+For pipe chains Base pipe `|>` is supported, but chains can also be
 broken at lines ending in any `%%` infix, and any math/logic infix. So
 you can break `ggplot2` layers chained with `+` this way too.
 
