@@ -530,4 +530,9 @@ test_that("I can break chains", {
       "summarise()"
     )
   )
+
+  expect_equal(
+    get_broken_chain(c("foo <-", "TRUE == TRUE"), 2),
+    "TRUE == TRUE"
+  )
 })
