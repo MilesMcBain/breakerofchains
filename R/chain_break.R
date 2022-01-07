@@ -19,8 +19,19 @@
 #'
 #' It is unlikely you want to run this function directly. You probably want to
 #' bind it to a keyboard shortcut. See README for more information.
+#' 
+#' Developers: You can create addins / shortcuts that treat the result of chain evaluation differently
+#' by wrapping this function. e.g. `view(break_chain())` The parameters of this
+#' function are inteded to be useful for this e.g.
+#' `view(break_chain(print_result = FALSE))`
+#' @param print_result Enable/disable printing of chain evaluation result in console.
+#'   Useful when wrapping this function to display results in a custom way.
+#' @param assign_result assign the result of chain evaluation to `.chain` in Global environment?
 #' @export
-break_chain <- function() {
+#' @return the result of chain execution invisibly
+break_chain <- function(
+    print_result = TRUE, 
+    assign_result = getOption("breakerofchains_store_result", TRUE)) {
     doc_context <- rstudioapi::getActiveDocumentContext()
 
     doc_lines <- doc_context$contents
@@ -36,10 +47,10 @@ break_chain <- function() {
 
     calling_env <- parent.frame()
     .chain <- eval(parse(text = broken_chain), envir = calling_env)
-    print(.chain)
+    if (print_result) print(.chain)
 
-    if (getOption("breakerofchains_store_result", TRUE)) assign(".chain", .chain, .GlobalEnv)
-    invisible()
+    if (assign_result) assign(".chain", .chain, .GlobalEnv)
+    invisible(.chain)
 }
 
 

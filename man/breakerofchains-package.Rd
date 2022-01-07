@@ -6,11 +6,7 @@
 \alias{breakerofchains-package}
 \title{breakerofchains: Break Chained Expressions and Run Them with Printed Output}
 \description{
-Run an infix operator expression chain up to the line your
-  cursor is on, printing the output, and ignoring any result assignment step.
-  This facilitates easier interactive debugging of chained code. Common
-  examples of code amenable to breaking with this tool are {dplyr} wrangling
-  chained with `%>%`, and {ggplot2} plotting chained with `+`.
+Run an infix operator expression chain up to the line your cursor is on, printing the output, and ignoring any result assignment step. This facilitates easier interactive debugging of chained code. Common examples of code amenable to breaking with this tool are {dplyr} wrangling chained with `%>%`, and {ggplot2} plotting chained with `+`.
 }
 \details{
 The function you are looking for is \code{\link[=break_chain]{break_chain()}}. Bind it to a keyboard

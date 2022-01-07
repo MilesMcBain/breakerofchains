@@ -39,22 +39,20 @@ star_plot <-
   geom_point()
 ```
 
-1.  Pop your cursor on line you want to run up to. e.g. `select(height,
-    mass)`.
+1.  Pop your cursor on line you want to run up to.
+    e.g. `select(height, mass)`.
 
 2.  Invoke the RStudio Addin `Break chain and run to cursor`
 
 3.  Code is run from start of chain up to your cursor line, and result
     is printed in the console:
 
-<!-- end list -->
-
 ``` r
 starwars %>%
   group_by(species, sex) %>%
   select(height, mass)
 #> Adding missing grouping variables: `species`, `sex`
-#> # A tibble: 87 x 4
+#> # A tibble: 87 × 4
 #> # Groups:   species, sex [41]
 #>    species sex    height  mass
 #>    <chr>   <chr>   <int> <dbl>
@@ -96,16 +94,14 @@ passing it to further diagnostics. I’ve found this is nicer than
 `.Last.value` which is easy to accidentally overwrite, and has a hard to
 remember the capitalisation scheme.
 
-Disable this behaviour with `options(breakerofchains_store_result =
-FALSE)`
+Disable this behaviour with
+`options(breakerofchains_store_result = FALSE)`
 
 ## Keybindings
 
-  - RStudio: [addins can be bound to keys using the keybinding
+-   RStudio: [addins can be bound to keys using the keybinding
     menu](https://www.infoworld.com/article/3327573/do-more-with-r-rstudio-addins-and-keyboard-shortcuts.html).
-  - VSCode: create a binding for your `keybindings.json` like:
-
-<!-- end list -->
+-   VSCode: create a binding for your `keybindings.json` like:
 
 ``` json
 [
@@ -126,3 +122,10 @@ process will fail if any of the code above the cursor is invalid - even
 code not in the chain.
 
 For Rmd documents only code in the current chunk is parsed.
+
+## Extending it yourself
+
+`break_chain()` returns the result of the chain evaluation invisibly, so
+you can build your own shortcuts that do something with the result other
+than print it to the console. E.g. `View(break_chain())` See
+`break_chain` and `NEWS.md` for more info.

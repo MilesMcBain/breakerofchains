@@ -110,3 +110,9 @@ process will fail if any of the code above the cursor is invalid - even code
 not in the chain. 
 
 For Rmd documents only code in the current chunk is parsed.
+
+## Extending it yourself
+
+`break_chain()` returns the result of the chain evaluation invisibly, so you can
+build your own shortcuts that do something with the result other than print it
+to the console. E.g. `View(break_chain())` See `break_chain` and `NEWS.md` for more info.

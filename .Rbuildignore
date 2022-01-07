@@ -4,3 +4,5 @@
 ^\.github$
 ^\.vscode$
 ^\.devcontainer
+^.*\.Rproj$
+^\.Rproj\.user$

@@ -1,6 +1,6 @@
 Package: breakerofchains
 Title: Break Chained Expressions and Run Them with Printed Output
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: 
     person(given = "Miles",
            family = "McBain",
@@ -15,7 +15,7 @@ Description: Run an infix operator expression chain up to the line your
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

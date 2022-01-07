@@ -4,7 +4,19 @@
 \alias{break_chain}
 \title{break an infix (like \%>\%) chain and run.}
 \usage{
-break_chain()
+break_chain(
+  print_result = TRUE,
+  assign_result = getOption("breakerofchains_store_result", TRUE)
+)
+}
+\arguments{
+\item{print_result}{Enable/disable printing of chain evaluation result in console.
+Useful when wrapping this function to display results in a custom way.}
+
+\item{assign_result}{assign the result of chain evaluation to \code{.chain} in Global environment?}
+}
+\value{
+the result of chain execution invisibly
 }
 \description{
 Run a chain of piped or otherwise infixed commands up to and including the
@@ -26,4 +38,9 @@ above the cursor line must be valid parsable R code.
 
 It is unlikely you want to run this function directly. You probably want to
 bind it to a keyboard shortcut. See README for more information.
+
+Developers: You can create addins / shortcuts that treat the result of chain evaluation differently
+by wrapping this function. e.g. \code{view(break_chain())} The parameters of this
+function are inteded to be useful for this e.g.
+\code{view(break_chain(print_result = FALSE))}
 }
