@@ -1,3 +1,8 @@
+# 0.3.2
+
+* Minor usability fix for RStudio
+* Make compatible with more strict type checking in dev `{dplyr}`.
+
 # 0.3.0
 
 `break_chain()` is now extendable by developers. It returns the result of chain
