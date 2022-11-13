@@ -13,7 +13,7 @@ polyfill_base_pipe <- function(source_tokens) {
   greater_than <- source_tokens$value == ">"
   same_row <-
     source_tokens$row == dplyr::lead(source_tokens$row, 
-                                    default = Inf)
+                                    default = .Machine$integer.max)
   pipes <- 
     vertical_bar & 
     dplyr::lead(greater_than, default = FALSE) &
